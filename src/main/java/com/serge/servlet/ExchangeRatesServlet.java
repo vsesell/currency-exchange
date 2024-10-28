@@ -25,8 +25,6 @@ public class ExchangeRatesServlet extends HttpServlet {
                 && parameterNames.contains("targetCurrencyCode")
                 && parameterNames.contains("rate"))) {
             resp.setStatus(400);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(ErrorMessages.NO_PARAMETER_EXCHANGE_RATE);
         } else {
             try {
@@ -36,8 +34,6 @@ public class ExchangeRatesServlet extends HttpServlet {
                     ers.findRateByCodes(req.getParameter("baseCurrencyCode"),
                             req.getParameter("targetCurrencyCode"));
                     resp.setStatus(409);
-                    resp.setContentType("application/json");
-                    resp.setCharacterEncoding("UTF-8");
                     resp.getWriter().write(ErrorMessages.EXCHANGE_RATE_ALREADY_EXIST);
                 } catch (Exception e) {
                     var result = ers.saveExchangeRate(
@@ -46,14 +42,10 @@ public class ExchangeRatesServlet extends HttpServlet {
                             Double.valueOf(req.getParameter("rate"))
                     );
                     resp.setStatus(200);
-                    resp.setContentType("application/json");
-                    resp.setCharacterEncoding("UTF-8");
                     resp.getWriter().write(result);
                 }
             } catch (Exception e) {
                 resp.setStatus(404);
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(ErrorMessages.NO_CURRENCY);
             }
         }
@@ -62,8 +54,6 @@ public class ExchangeRatesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var allExchangeRates = ers.findAllExchangeRates();
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write(allExchangeRates);
     }
 }

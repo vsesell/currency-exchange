@@ -19,17 +19,12 @@ public class CurrencyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println();
         var currency = req.getPathInfo().substring(1);
-
         try {
             var result = currencyService.findCurrencyByCode(currency);
             resp.setStatus(200);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(result);
         } catch (RuntimeException e) {
             resp.setStatus(404);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(e.getMessage());
         }
 

@@ -14,6 +14,7 @@ import java.io.IOException;
 public class ExchangeServlet extends HttpServlet {
     ExchangeService exchangeService = ExchangeService.getINSTANCE();
     CurrencyService currencyService = CurrencyService.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var from = req.getParameter("from");
@@ -33,15 +34,11 @@ public class ExchangeServlet extends HttpServlet {
                 }
                 var v = Double.parseDouble(amount);
                 var s = exchangeService.doExchange(from, to, v);
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(s);
             } catch (NumberFormatException e) {
                 resp.setContentType("text/plain");
                 resp.getWriter().write("amount должно быть числом");
             } catch (RuntimeException e) {
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(e.getMessage());
             }
 

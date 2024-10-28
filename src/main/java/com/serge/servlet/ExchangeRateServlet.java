@@ -24,8 +24,6 @@ public class ExchangeRateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var query = req.getPathInfo().substring(1);
         if (query.length() != 6) {
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(ErrorMessages.SIX_CHARACTER);
         } else {
             String[] queryArray = {query.substring(0, query.length() / 2), query.substring(query.length() / 2)};
@@ -35,19 +33,13 @@ public class ExchangeRateServlet extends HttpServlet {
                 try {
                     var rateByCodes = exchangeRateService.findRateByCodes(queryArray[0], queryArray[1]);
                     resp.setStatus(200);
-                    resp.setContentType("application/json");
-                    resp.setCharacterEncoding("UTF-8");
                     resp.getWriter().write(rateByCodes);
                 } catch (Exception e) {
                     resp.setStatus(404);
-                    resp.setContentType("application/json");
-                    resp.setCharacterEncoding("UTF-8");
                     resp.getWriter().write(ErrorMessages.NO_EXCHANGE_RATE);
                 }
             } catch (RuntimeException e) {
                 resp.setStatus(400);
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(ErrorMessages.NO_EXCHANGE_RATE);
             }
         }
@@ -68,13 +60,9 @@ public class ExchangeRateServlet extends HttpServlet {
         var query = req.getPathInfo().substring(1);
         List<String> params = Collections.list(req.getParameterNames());
         if (query.length() != 6) {
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(ErrorMessages.SIX_CHARACTER);
         } else if (!params.contains("rate")) {
             resp.setStatus(400);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(ErrorMessages.NO_PARAMETER_RATE);
         } else {
             String[] queryArray = {query.substring(0, query.length() / 2), query.substring(query.length() / 2)};
@@ -82,16 +70,11 @@ public class ExchangeRateServlet extends HttpServlet {
                 exchangeRateService.findRateByCodes(queryArray[0], queryArray[1]);
                 var rate = exchangeRateService.updateExchangeRate(queryArray[0], queryArray[1], Double.valueOf(req.getParameter("rate")));
                 resp.setStatus(200);
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(rate);
             } catch (Exception e) {
                 resp.setStatus(404);
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(ErrorMessages.NO_EXCHANGE_RATE);
             }
-
         }
     }
 }
