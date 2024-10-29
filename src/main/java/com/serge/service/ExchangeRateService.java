@@ -9,6 +9,7 @@ import com.serge.util.ErrorMessages;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class ExchangeRateService {
     }
 
 
-    public String saveExchangeRate(String baseERCode,String targetBRCode, Double rate){
+    public String saveExchangeRate(String baseERCode,String targetBRCode, BigDecimal rate){
         try (var sw = new StringWriter()){
             var entity = exchangeRateDao.save(new ExchangeRate(
                     null,
@@ -91,7 +92,7 @@ public class ExchangeRateService {
         }
     }
 
-    public String updateExchangeRate(String baseExchangeRate, String targetExchangeRate, Double rate) {
+    public String updateExchangeRate(String baseExchangeRate, String targetExchangeRate, BigDecimal rate) {
         var firstId = currencyDao.findByCode(baseExchangeRate).get().getId();
         var secondId = currencyDao.findByCode(targetExchangeRate).get().getId();
 

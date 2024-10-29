@@ -1,13 +1,15 @@
 package com.serge.entity;
 
+import java.math.BigDecimal;
+
 public class ExchangeRate {
     Integer id;
     Integer baseCurrency;
     Integer targetCurrency;
-    Double rate;
+    BigDecimal rate;
 
 
-    public ExchangeRate(Integer id, Integer baseCurrency, Integer targetCurrency, Double rate) {
+    public ExchangeRate(Integer id, Integer baseCurrency, Integer targetCurrency, BigDecimal rate) {
         this.id = id;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
@@ -51,11 +53,11 @@ public class ExchangeRate {
         this.targetCurrency = targetCurrency;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 }

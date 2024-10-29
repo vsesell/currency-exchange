@@ -11,6 +11,8 @@ import com.serge.util.ErrorMessages;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 public class ExchangeService {
@@ -20,7 +22,7 @@ public class ExchangeService {
     private static final Integer USD_CODE = 2;
 
 
-    public String doExchange(String base, String target, Double amount) {
+    public String doExchange(String base, String target, BigDecimal amount) {
         var baseId = currencyDao.findByCode(base).get().getId();
         var targetId = currencyDao.findByCode(target).get().getId();
         var rate = exchangeRateDao.findByBaseAndTargetCurrencies(baseId, targetId);
@@ -31,7 +33,7 @@ public class ExchangeService {
                     currencyDao.findById(rate.get().getTargetCurrency()).get(),
                     rate.get().getRate(),
                     amount,
-                    amount * rate.get().getRate()
+                    amount.multiply(rate.get().getRate())
             );
 
             var mapper = new ObjectMapper();
@@ -43,14 +45,14 @@ public class ExchangeService {
             }
         } else if (exchangeRateDao.findByBaseAndTargetCurrencies(targetId, baseId).isPresent()) {
             var invertedRate = exchangeRateDao.findByBaseAndTargetCurrencies(targetId, baseId);
-            Double invert = 1 / invertedRate.get().getRate();
+            BigDecimal invert = new BigDecimal("1").divide(invertedRate.get().getRate(), 2, RoundingMode.HALF_UP);
             ExchangeDto dto = new ExchangeDto(
                     invertedRate.get().getId(),
                     currencyDao.findById(invertedRate.get().getBaseCurrency()).get(),
                     currencyDao.findById(invertedRate.get().getTargetCurrency()).get(),
                     invert,
                     amount,
-                    amount * invert
+                    amount.multiply(invert)
             );
             var mapper = new ObjectMapper();
             try (var sw = new StringWriter()) {
@@ -65,14 +67,14 @@ public class ExchangeService {
             var exchangeRateToTarget = exchangeRateDao.findByBaseAndTargetCurrencies(USD_CODE, targetId);
             var baseRate = exchangeRateToBase.get().getRate();
             var targetRate = exchangeRateToTarget.get().getRate();
-            var crossRate = targetRate / baseRate;
+            var crossRate = targetRate.divide(baseRate, 2, RoundingMode.HALF_UP);
             ExchangeDto dto = new ExchangeDto(
                     99,
                     currencyDao.findById(exchangeRateToBase.get().getTargetCurrency()).get(),
                     currencyDao.findById(exchangeRateToTarget.get().getTargetCurrency()).get(),
                     crossRate,
                     amount,
-                    crossRate * amount
+                    crossRate.multiply(amount)
             );
             var mapper = new ObjectMapper();
             try (var sw = new StringWriter()) {

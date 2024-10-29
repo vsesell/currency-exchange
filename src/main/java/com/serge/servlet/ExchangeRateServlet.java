@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ExchangeRateServlet extends HttpServlet {
             String[] queryArray = {query.substring(0, query.length() / 2), query.substring(query.length() / 2)};
             try {
                 exchangeRateService.findRateByCodes(queryArray[0], queryArray[1]);
-                var rate = exchangeRateService.updateExchangeRate(queryArray[0], queryArray[1], Double.valueOf(req.getParameter("rate")));
+                var rate = exchangeRateService.updateExchangeRate(queryArray[0], queryArray[1], new BigDecimal(req.getParameter("rate")));
                 resp.setStatus(200);
                 resp.getWriter().write(rate);
             } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.serge.dao;
 import com.serge.entity.ExchangeRate;
 import com.serge.util.ConnectionManager;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,17 +100,6 @@ public class ExchangeRateDao implements Dao<Integer, ExchangeRate>{
         }
     }
 
-    private ExchangeRate buildEntity(ResultSet resultSet) throws SQLException {
-        return new ExchangeRate(
-                resultSet.getObject("id", Integer.class),
-                resultSet.getObject("base_currency_id", Integer.class),
-                resultSet.getObject("target_currency_id", Integer.class),
-                resultSet.getObject("rate", Double.class)
-        );
-    }
-    public static ExchangeRateDao getInstance(){
-        return INSTANCE;
-    }
 
     public Integer updateExchangeRateByCurrenciesIds(Integer id1, Integer id2, Double newRate) {
         try (var connection = ConnectionManager.get();
@@ -121,5 +111,16 @@ public class ExchangeRateDao implements Dao<Integer, ExchangeRate>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    private ExchangeRate buildEntity(ResultSet resultSet) throws SQLException {
+        return new ExchangeRate(
+                resultSet.getObject("id", Integer.class),
+                resultSet.getObject("base_currency_id", Integer.class),
+                resultSet.getObject("target_currency_id", Integer.class),
+                resultSet.getObject("rate", BigDecimal.class)
+        );
+    }
+    public static ExchangeRateDao getInstance(){
+        return INSTANCE;
     }
 }

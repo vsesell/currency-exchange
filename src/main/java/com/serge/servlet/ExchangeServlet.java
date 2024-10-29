@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet("/exchange")
 public class ExchangeServlet extends HttpServlet {
@@ -32,7 +33,7 @@ public class ExchangeServlet extends HttpServlet {
                     resp.setContentType("text/plain");
                     resp.getWriter().write("Параметры from/to должны содержать код валюты (USD, RUB etc.");
                 }
-                var v = Double.parseDouble(amount);
+                var v = new BigDecimal(amount);
                 var s = exchangeService.doExchange(from, to, v);
                 resp.getWriter().write(s);
             } catch (NumberFormatException e) {

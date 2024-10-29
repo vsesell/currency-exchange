@@ -2,13 +2,15 @@ package com.serge.dto;
 
 import com.serge.entity.Currency;
 
+import java.math.BigDecimal;
+
 public class ExchangeRateDto {
     Integer id;
     Currency baseCurrency;
     Currency targetCurrency;
-    Double rate;
+    BigDecimal rate;
 
-    public ExchangeRateDto(Integer id, Currency baseCurrency, Currency targetCurrency, Double rate) {
+    public ExchangeRateDto(Integer id, Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
         this.id = id;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
@@ -42,11 +44,11 @@ public class ExchangeRateDto {
         this.targetCurrency = targetCurrency;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 }

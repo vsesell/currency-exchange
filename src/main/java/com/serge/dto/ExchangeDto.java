@@ -2,11 +2,13 @@ package com.serge.dto;
 
 import com.serge.entity.Currency;
 
-public class ExchangeDto extends ExchangeRateDto {
-    Double amount;
-    Double convertedAmount;
+import java.math.BigDecimal;
 
-    public ExchangeDto(Integer id, Currency baseCurrency, Currency targetCurrency, Double rate, Double amount, Double convertedAmount) {
+public class ExchangeDto extends ExchangeRateDto {
+    BigDecimal amount;
+    BigDecimal convertedAmount;
+
+    public ExchangeDto(Integer id, Currency baseCurrency, Currency targetCurrency, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount) {
         super(id, baseCurrency, targetCurrency, rate);
         this.amount = amount;
         this.convertedAmount = convertedAmount;
@@ -15,19 +17,19 @@ public class ExchangeDto extends ExchangeRateDto {
     public ExchangeDto() {
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public Double getConvertedAmount() {
+    public BigDecimal getConvertedAmount() {
         return convertedAmount;
     }
 
-    public void setConvertedAmount(Double convertedAmount) {
+    public void setConvertedAmount(BigDecimal convertedAmount) {
         this.convertedAmount = convertedAmount;
     }
 }

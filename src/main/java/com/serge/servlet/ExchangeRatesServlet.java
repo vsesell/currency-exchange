@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ExchangeRatesServlet extends HttpServlet {
                     var result = ers.saveExchangeRate(
                             req.getParameter("baseCurrencyCode"),
                             req.getParameter("targetCurrencyCode"),
-                            Double.valueOf(req.getParameter("rate"))
+                            new BigDecimal(req.getParameter("rate"))
                     );
                     resp.setStatus(200);
                     resp.getWriter().write(result);
